@@ -7,8 +7,8 @@
 * Cubr Ladislav 
 * Hasíková Iva
 * Hiřman Matyáš
-* Kolmačková Tereza
-* Kristeková Daniela
+* Kolmačková Tereza https://orcid.org/0000-0003-0829-0770
+* Kristeková Daniela https://orcid.org/0000-0001-9242-1096
 * Kubatová Barbora
 * Messerschmidt Tomáš 
 * Řiháčková Katarína 
