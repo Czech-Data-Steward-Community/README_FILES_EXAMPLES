@@ -1,4 +1,3 @@
-<!-- 
 
 ## LICENSE Notice for the README file template and examples
 
@@ -21,7 +20,6 @@ This template aims to help you create a README for your data. Fill in only the s
 
 Specific discipline examples of this file: [add discipline]
 
--->
 
 # DATASET NAME: [Data name]
 
