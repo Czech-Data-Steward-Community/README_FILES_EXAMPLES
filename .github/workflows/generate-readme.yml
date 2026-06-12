@@ -23,117 +23,149 @@ jobs:
           template-path: .github/issue_template/readme-generator.yml
 
       - name: Build Markdown and JSON Outputs
+        env:
+          # Mapping variables to the environment handles multiline strings safely in bash
+          DATASET_NAME: ${{ steps.issue-parser.outputs.dataset_name }}
+          AUTHORS: ${{ steps.issue-parser.outputs.authors }}
+          MAIN_CONTACT: ${{ steps.issue-parser.outputs.main_contact }}
+          DATASET_LICENSE: ${{ steps.issue-parser.outputs.dataset_license }}
+          README_VERSION: ${{ steps.issue-parser.outputs.readme_version }}
+          PID: ${{ steps.issue-parser.outputs.pid }}
+          PROJECT_WEBSITE: ${{ steps.issue-parser.outputs.project_website }}
+          BRIEF_DESCRIPTION: ${{ steps.issue-parser.outputs.brief_description }}
+          RESEARCH_CONTEXT: ${{ steps.issue-parser.outputs.research_context }}
+          RELATED_PUBLICATIONS: ${{ steps.issue-parser.outputs.related_publications }}
+          DIRECTORY_STRUCTURE: ${{ steps.issue-parser.outputs.directory_structure }}
+          FILE_DESCRIPTIONS: ${{ steps.issue-parser.outputs.file_descriptions }}
+          ENCODING: ${{ steps.issue-parser.outputs.encoding }}
+          VARIABLE_DESCRIPTIONS: ${{ steps.issue-parser.outputs.variable_descriptions }}
+          SPECIAL_VALUES: ${{ steps.issue-parser.outputs.special_values }}
+          COLLECTION_DATE: ${{ steps.issue-parser.outputs.collection_date }}
+          COLLECTION_LOCATION: ${{ steps.issue-parser.outputs.collection_location }}
+          TOOLS_FOR_COLLECTION: ${{ steps.issue-parser.outputs.tools_for_collection }}
+          ORIGINAL_DATA: ${{ steps.issue-parser.outputs.original_data }}
+          METHOD_OF_COLLECTION: ${{ steps.issue-parser.outputs.method_of_collection }}
+          PROCESSING_WORKFLOW: ${{ steps.issue-parser.outputs.processing_workflow }}
+          PROCESSING_SOFTWARE: ${{ steps.issue-parser.outputs.processing_software }}
+          DATA_COMPLETENESS: ${{ steps.issue-parser.outputs.data_completeness }}
+          LICENSE_TERMS: ${{ steps.issue-parser.outputs.license_terms }}
+          RESTRICTIONS_RECOMMENDATIONS: ${{ steps.issue-parser.outputs.restrictions_recommendations }}
+          HARDWARE_SOFTWARE_REQUIREMENTS: ${{ steps.issue-parser.outputs.hardware_software_requirements }}
+          PROPOSED_CITATION: ${{ steps.issue-parser.outputs.proposed_citation }}
+          ETHICS_PERSONAL_DATA: ${{ steps.issue-parser.outputs.ethics_personal_data }}
+          ETHICAL_APPROVAL: ${{ steps.issue-parser.outputs.ethical_approval }}
+          INFORMED_CONSENT: ${{ steps.issue-parser.outputs.informed_consent }}
         run: |
           mkdir -p output-${{ github.event.issue.number }}
           
-          # 1. GENERATE THE MARKDOWN README
+          # 1. GENERATE THE MARKDOWN README (Keep EOF flush left to prevent accidental indent spacing)
           cat << 'EOF' > output-${{ github.event.issue.number }}/_README.md
-          # DATASET NAME: ${{ steps.issue-parser.outputs.dataset_name }}
+          # DATASET NAME: $DATASET_NAME
 
           ## BASIC INFORMATION
           Author(s):  
-          ${{ steps.issue-parser.outputs.authors }}
+          $AUTHORS
 
-          Main contact: ${{ steps.issue-parser.outputs.main_contact }}  
-          Dataset license: ${{ steps.issue-parser.outputs.dataset_license }}  
-          README version: ${{ steps.issue-parser.outputs.readme_version }}  
-          PID: ${{ steps.issue-parser.outputs.pid }}  
-          Project website: ${{ steps.issue-parser.outputs.project_website }}
+          Main contact: $MAIN_CONTACT  
+          Dataset license: $DATASET_LICENSE  
+          README version: $README_VERSION  
+          PID: $PID  
+          Project website: $PROJECT_WEBSITE
 
           ---
 
           ## DESCRIPTION
 
           ### Brief Description
-          ${{ steps.issue-parser.outputs.brief_description }}
+          $BRIEF_DESCRIPTION
 
           ### Research Context
-          ${{ steps.issue-parser.outputs.research_context }}
+          $RESEARCH_CONTEXT
 
           ### Related Publications
-          ${{ steps.issue-parser.outputs.related_publications }}
+          $RELATED_PUBLICATIONS
 
           ---
 
           ## DATASET/COLLECTION CONTENTS
 
           ### Directory Structure
-          ${{ steps.issue-parser.outputs.directory_structure }}
+          $DIRECTORY_STRUCTURE
 
           ### File Descriptions
-          ${{ steps.issue-parser.outputs.file_descriptions }}
+          $FILE_DESCRIPTIONS
 
           ---
 
           ## DATA STRUCTURE
 
           ### Encoding
-          ${{ steps.issue-parser.outputs.encoding }}
+          $ENCODING
 
           ### Variable Descriptions
-          ${{ steps.issue-parser.outputs.variable_descriptions }}
+          $VARIABLE_DESCRIPTIONS
 
           ### Special Values
-          ${{ steps.issue-parser.outputs.special_values }}
+          $SPECIAL_VALUES
 
           ---
 
           ## METHODOLOGY-PROVENANCE
 
           ### Collection/Creation of Data
-          - Collection date: ${{ steps.issue-parser.outputs.collection_date }}
-          - Collection location: ${{ steps.issue-parser.outputs.collection_location }}
+          - Collection date: $COLLECTION_DATE
+          - Collection location: $COLLECTION_LOCATION
           - Tools for collection: 
-          ${{ steps.issue-parser.outputs.tools_for_collection }}
+          $TOOLS_FOR_COLLECTION
 
           - Original data:
-          ${{ steps.issue-parser.outputs.original_data }}
+          $ORIGINAL_DATA
 
           - Method of collection/production:
-          ${{ steps.issue-parser.outputs.method_of_collection }}
+          $METHOD_OF_COLLECTION
 
           ---
 
           ## DATA PROCESSING
 
           ### Processing
-          ${{ steps.issue-parser.outputs.processing_workflow }}
+          $PROCESSING_WORKFLOW
 
           ### Method of Data Processing
-          ${{ steps.issue-parser.outputs.processing_software }}
+          $PROCESSING_SOFTWARE
 
           ### Data Completeness
-          ${{ steps.issue-parser.outputs.data_completeness }}
+          $DATA_COMPLETENESS
 
           ---
 
           ## REUSE
 
           ### License and Terms of Use
-          ${{ steps.issue-parser.outputs.license_terms }}
+          $LICENSE_TERMS
 
           ### Restrictions and Recommendations
-          ${{ steps.issue-parser.outputs.restrictions_recommendations }}
+          $RESTRICTIONS_RECOMMENDATIONS
 
           ### Software and Hardware Requirements
-          ${{ steps.issue-parser.outputs.hardware_software_requirements }}
+          $HARDWARE_SOFTWARE_REQUIREMENTS
 
           ---
 
           ## PROPOSED CITATION
-          ${{ steps.issue-parser.outputs.proposed_citation }}
+          $PROPOSED_CITATION
 
           ---
 
           ## ETHICS AND DATA PROTECTION
           ### Personal and Sensitive Data Protection
-          ${{ steps.issue-parser.outputs.ethics_personal_data }}
+          $ETHICS_PERSONAL_DATA
 
           ### Ethical Approval
-          ${{ steps.issue-parser.outputs.ethical_approval }}
+          $ETHICAL_APPROVAL
 
           ### Informed Consent
-          ${{ steps.issue-parser.outputs.informed_consent }}
+          $INFORMED_CONSENT
 
           ---
 
@@ -146,34 +178,38 @@ jobs:
           `_README_v1-0` Initial publication generated via automation workflow.
           EOF
 
-          # 2. GENERATE THE JSON COMPANION FILE
-          cat << 'EOF' > output-${{ github.event.issue.number }}/readme.json
-          {
-            "dataset_name": "${{ steps.issue-parser.outputs.dataset_name }}",
-            "basic_information": {
-              "authors": "${{ steps.issue-parser.outputs.authors }}",
-              "main_contact": "${{ steps.issue-parser.outputs.main_contact }}",
-              "dataset_license": "${{ steps.issue-parser.outputs.dataset_license }}",
-              "readme_version": "${{ steps.issue-parser.outputs.readme_version }}",
-              "pid": "${{ steps.issue-parser.outputs.pid }}",
-              "project_website": "${{ steps.issue-parser.outputs.project_website }}"
+          # 2. GENERATE THE JSON COMPANION FILE (Using node script safely writes multiline text fields)
+          node -e '
+          const fs = require("fs");
+          const data = {
+            dataset_name: process.env.DATASET_NAME,
+            basic_information: {
+              authors: process.env.AUTHORS,
+              main_contact: process.env.MAIN_CONTACT,
+              dataset_license: process.env.DATASET_LICENSE,
+              readme_version: process.env.README_VERSION,
+              pid: process.env.PID,
+              project_website: process.env.PROJECT_WEBSITE
             },
-            "description": {
-              "brief_description": "${{ steps.issue-parser.outputs.brief_description }}",
-              "research_context": "${{ steps.issue-parser.outputs.research_context }}",
-              "related_publications": "${{ steps.issue-parser.outputs.related_publications }}"
+            description: {
+              brief_description: process.env.BRIEF_DESCRIPTION,
+              research_context: process.env.RESEARCH_CONTEXT,
+              related_publications: process.env.RELATED_PUBLICATIONS
             },
-            "dataset_collection_contents": {
-              "directory_structure": "${{ steps.issue-parser.outputs.directory_structure }}",
-              "file_descriptions": "${{ steps.issue-parser.outputs.file_descriptions }}"
+            dataset_collection_contents: {
+              directory_structure: process.env.DIRECTORY_STRUCTURE,
+              file_descriptions: process.env.FILE_DESCRIPTIONS
             },
-            "data_structure": {
-              "encoding": "${{ steps.issue-parser.outputs.encoding }}",
-              "variable_descriptions": "${{ steps.issue-parser.outputs.variable_descriptions }}",
-              "special_values": "${{ steps.issue-parser.outputs.special_values }}"
+            data_structure: {
+              encoding: process.env.ENCODING,
+              variable_descriptions: process.env.VARIABLE_DESCRIPTIONS,
+              special_values: process.env.SPECIAL_VALUES
             }
-          }
-          EOF
+          };
+          fs.writeFileSync(`output-${process.env.GITHUB_ISSUE_NUMBER}/readme.json`, JSON.stringify(data, null, 2));
+          '
+        env:
+          GITHUB_ISSUE_NUMBER: ${{ github.event.issue.number }}
 
       - name: Zip and Prepare Artifacts
         uses: actions/upload-artifact@v4
