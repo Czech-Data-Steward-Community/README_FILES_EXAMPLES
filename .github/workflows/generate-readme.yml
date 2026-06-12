@@ -1,4 +1,4 @@
-name: Generate README From Form
+name: Generate README From Markdown Issue
 
 on:
   issues:
@@ -6,7 +6,8 @@ on:
 
 jobs:
   build-readme:
-    if: contains(github.event.issue.labels.*.name, 'readme-generator')
+    # Trigger only if the issue has the correct label or title keyword
+    if: contains(github.event.issue.labels.*.name, 'readme-generator') || contains(github.event.issue.title, '[README]')
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -16,196 +17,46 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Parse Issue Form Answers
-        uses: stefanbuck/github-issue-parser@v3
-        id: issue-parser
-        with:
-          template-path: .github/issue_template/readme-generator.yml
-
-      - name: Build Markdown and JSON Outputs
+      - name: Process Text Template and Build Outputs
         env:
-          # Mapping variables to the environment handles multiline strings safely in bash
-          DATASET_NAME: ${{ steps.issue-parser.outputs.dataset_name }}
-          AUTHORS: ${{ steps.issue-parser.outputs.authors }}
-          MAIN_CONTACT: ${{ steps.issue-parser.outputs.main_contact }}
-          DATASET_LICENSE: ${{ steps.issue-parser.outputs.dataset_license }}
-          README_VERSION: ${{ steps.issue-parser.outputs.readme_version }}
-          PID: ${{ steps.issue-parser.outputs.pid }}
-          PROJECT_WEBSITE: ${{ steps.issue-parser.outputs.project_website }}
-          BRIEF_DESCRIPTION: ${{ steps.issue-parser.outputs.brief_description }}
-          RESEARCH_CONTEXT: ${{ steps.issue-parser.outputs.research_context }}
-          RELATED_PUBLICATIONS: ${{ steps.issue-parser.outputs.related_publications }}
-          DIRECTORY_STRUCTURE: ${{ steps.issue-parser.outputs.directory_structure }}
-          FILE_DESCRIPTIONS: ${{ steps.issue-parser.outputs.file_descriptions }}
-          ENCODING: ${{ steps.issue-parser.outputs.encoding }}
-          VARIABLE_DESCRIPTIONS: ${{ steps.issue-parser.outputs.variable_descriptions }}
-          SPECIAL_VALUES: ${{ steps.issue-parser.outputs.special_values }}
-          COLLECTION_DATE: ${{ steps.issue-parser.outputs.collection_date }}
-          COLLECTION_LOCATION: ${{ steps.issue-parser.outputs.collection_location }}
-          TOOLS_FOR_COLLECTION: ${{ steps.issue-parser.outputs.tools_for_collection }}
-          ORIGINAL_DATA: ${{ steps.issue-parser.outputs.original_data }}
-          METHOD_OF_COLLECTION: ${{ steps.issue-parser.outputs.method_of_collection }}
-          PROCESSING_WORKFLOW: ${{ steps.issue-parser.outputs.processing_workflow }}
-          PROCESSING_SOFTWARE: ${{ steps.issue-parser.outputs.processing_software }}
-          DATA_COMPLETENESS: ${{ steps.issue-parser.outputs.data_completeness }}
-          LICENSE_TERMS: ${{ steps.issue-parser.outputs.license_terms }}
-          RESTRICTIONS_RECOMMENDATIONS: ${{ steps.issue-parser.outputs.restrictions_recommendations }}
-          HARDWARE_SOFTWARE_REQUIREMENTS: ${{ steps.issue-parser.outputs.hardware_software_requirements }}
-          PROPOSED_CITATION: ${{ steps.issue-parser.outputs.proposed_citation }}
-          ETHICS_PERSONAL_DATA: ${{ steps.issue-parser.outputs.ethics_personal_data }}
-          ETHICAL_APPROVAL: ${{ steps.issue-parser.outputs.ethical_approval }}
-          INFORMED_CONSENT: ${{ steps.issue-parser.outputs.informed_consent }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
         run: |
           mkdir -p output-${{ github.event.issue.number }}
           
-          # 1. GENERATE THE MARKDOWN README (Keep EOF flush left to prevent accidental indent spacing)
+          # 1. GENERATE THE MARKDOWN README
+          # We dump the raw body text provided by the user directly into the _README.md asset
+          # while stripping off the instruction blocks they left behind.
           cat << 'EOF' > output-${{ github.event.issue.number }}/_README.md
-          # DATASET NAME: $DATASET_NAME
+          # DATASET NAME: ${ISSUE_TITLE#"[README]: "}
 
-          ## BASIC INFORMATION
-          Author(s):  
-          $AUTHORS
-
-          Main contact: $MAIN_CONTACT  
-          Dataset license: $DATASET_LICENSE  
-          README version: $README_VERSION  
-          PID: $PID  
-          Project website: $PROJECT_WEBSITE
-
+          $ISSUE_BODY
+          
           ---
-
-          ## DESCRIPTION
-
-          ### Brief Description
-          $BRIEF_DESCRIPTION
-
-          ### Research Context
-          $RESEARCH_CONTEXT
-
-          ### Related Publications
-          $RELATED_PUBLICATIONS
-
-          ---
-
-          ## DATASET/COLLECTION CONTENTS
-
-          ### Directory Structure
-          $DIRECTORY_STRUCTURE
-
-          ### File Descriptions
-          $FILE_DESCRIPTIONS
-
-          ---
-
-          ## DATA STRUCTURE
-
-          ### Encoding
-          $ENCODING
-
-          ### Variable Descriptions
-          $VARIABLE_DESCRIPTIONS
-
-          ### Special Values
-          $SPECIAL_VALUES
-
-          ---
-
-          ## METHODOLOGY-PROVENANCE
-
-          ### Collection/Creation of Data
-          - Collection date: $COLLECTION_DATE
-          - Collection location: $COLLECTION_LOCATION
-          - Tools for collection: 
-          $TOOLS_FOR_COLLECTION
-
-          - Original data:
-          $ORIGINAL_DATA
-
-          - Method of collection/production:
-          $METHOD_OF_COLLECTION
-
-          ---
-
-          ## DATA PROCESSING
-
-          ### Processing
-          $PROCESSING_WORKFLOW
-
-          ### Method of Data Processing
-          $PROCESSING_SOFTWARE
-
-          ### Data Completeness
-          $DATA_COMPLETENESS
-
-          ---
-
-          ## REUSE
-
-          ### License and Terms of Use
-          $LICENSE_TERMS
-
-          ### Restrictions and Recommendations
-          $RESTRICTIONS_RECOMMENDATIONS
-
-          ### Software and Hardware Requirements
-          $HARDWARE_SOFTWARE_REQUIREMENTS
-
-          ---
-
-          ## PROPOSED CITATION
-          $PROPOSED_CITATION
-
-          ---
-
-          ## ETHICS AND DATA PROTECTION
-          ### Personal and Sensitive Data Protection
-          $ETHICS_PERSONAL_DATA
-
-          ### Ethical Approval
-          $ETHICAL_APPROVAL
-
-          ### Informed Consent
-          $INFORMED_CONSENT
-
-          ---
-
           ## ACKNOWLEDGEMENTS
           This README was based on the template/examples authored by the **[Collective of Data Stewards of the Czech Data Stewards Community](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/Collective_datastewards.md)** and is licensed under a [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
 
           ---
-
           ## README FILE CHANGE HISTORY
-          `_README_v1-0` Initial publication generated via automation workflow.
+          `_README_v1-0` Initial publication generated via automation text workflow.
           EOF
 
-          # 2. GENERATE THE JSON COMPANION FILE (Using node script safely writes multiline text fields)
+          # Clean up instructions from the user's generated file if they didn't delete them
+          sed -i '/### 📜 LICENSE Notice/,/---/d' output-${{ github.event.issue.number }}/_README.md
+          sed -i '/👉 **INSTRUCTIONS:/d' output-${{ github.event.issue.number }}/_README.md
+
+          # 2. GENERATE THE JSON COMPANION FILE
+          # Since it is a text block, we convert the raw lines into a single safe JSON string asset
           node -e '
           const fs = require("fs");
+          const rawText = process.env.ISSUE_BODY || "";
+          
           const data = {
-            dataset_name: process.env.DATASET_NAME,
-            basic_information: {
-              authors: process.env.AUTHORS,
-              main_contact: process.env.MAIN_CONTACT,
-              dataset_license: process.env.DATASET_LICENSE,
-              readme_version: process.env.README_VERSION,
-              pid: process.env.PID,
-              project_website: process.env.PROJECT_WEBSITE
-            },
-            description: {
-              brief_description: process.env.BRIEF_DESCRIPTION,
-              research_context: process.env.RESEARCH_CONTEXT,
-              related_publications: process.env.RELATED_PUBLICATIONS
-            },
-            dataset_collection_contents: {
-              directory_structure: process.env.DIRECTORY_STRUCTURE,
-              file_descriptions: process.env.FILE_DESCRIPTIONS
-            },
-            data_structure: {
-              encoding: process.env.ENCODING,
-              variable_descriptions: process.env.VARIABLE_DESCRIPTIONS,
-              special_values: process.env.SPECIAL_VALUES
-            }
+            dataset_title: process.env.ISSUE_TITLE,
+            generated_at: new Date().toISOString().split("T")[0],
+            raw_metadata_content: rawText.split("\n").map(line => line.trim()).filter(line => line.length > 0)
           };
+          
           fs.writeFileSync(`output-${process.env.GITHUB_ISSUE_NUMBER}/readme.json`, JSON.stringify(data, null, 2));
           '
         env:
@@ -222,13 +73,13 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            ### 🎉 Your Files are Ready!
+            ### 🎉 Your Dataset Metadata Files are Ready!
             
-            The submission has been processed. You can now download your customized markdown metadata file alongside its JSON twin.
+            The system has successfully processed your text entry. You can download the formatted bundle containing your markdown text and JSON structural file asset.
             
-            👉 **[Download Bundle Assets](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})** *(Navigate to the **Artifacts** section at the bottom of the landing page to download your zip folder).*
+            👉 **[Download Bundle Assets](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})** *(Scroll down to the **Artifacts** panel at the bottom of the landing page to download your zip).*
             
-            *This request issue will now close automatically.*
+            *This tracking ticket will now close.*
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Clean up and Close Issue
