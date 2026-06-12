@@ -3,19 +3,13 @@
 * Koutentaki Georgia https://orcid.org/0000-0002-8099-9963 
 * Kolmačka Tobiáš https://orcid.org/0009-0006-7760-7320
 * Martinková Pavla https://orcid.org/0000-0002-1456-4224
-* Soldánová Anna
-* Cubr Ladislav 
-* Hasíková Iva
-* Hiřman Matyáš
+* Soldánová Anna https://orcid.org/0009-0001-1109-9689
+* Hiřman Matyáš https://orcid.org/0000-0003-0153-9414
 * Kolmačková Tereza https://orcid.org/0000-0003-0829-0770
 * Kristeková Daniela https://orcid.org/0000-0001-9242-1096
-* Kubatová Barbora
-* Messerschmidt Tomáš 
-* Řiháčková Katarína 
-* Sauerová Toušková Monika
-* Schätz Martin
+* Schätz Martin https://orcid.org/0000-0003-0931-4017
 * Vališ Jan https://orcid.org/0000-0003-0349-6868
-* Vorel František 
+
 
 ### Detailed Contributions
 **Template Architecture & Design:** 
