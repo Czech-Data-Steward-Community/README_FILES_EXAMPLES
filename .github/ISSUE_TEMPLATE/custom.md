@@ -1,6 +1,6 @@
 ---
 name: "📝 Generate a Complete Dataset README"
-description: "Fill out this template to automatically generate a structured README.md and JSON file."
+about: "Fill out this template to automatically generate a structured README.md and JSON file."
 title: "[README]: "
 labels: ["readme-generator"]
 ---
