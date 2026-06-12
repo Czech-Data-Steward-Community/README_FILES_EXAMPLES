@@ -6,7 +6,6 @@ on:
 
 jobs:
   build-readme:
-    # Trigger only if the issue has the correct label or title keyword
     if: contains(github.event.issue.labels.*.name, 'readme-generator') || contains(github.event.issue.title, '[README]')
     runs-on: ubuntu-latest
     permissions:
@@ -25,8 +24,6 @@ jobs:
           mkdir -p output-${{ github.event.issue.number }}
           
           # 1. GENERATE THE MARKDOWN README
-          # We dump the raw body text provided by the user directly into the _README.md asset
-          # while stripping off the instruction blocks they left behind.
           cat << 'EOF' > output-${{ github.event.issue.number }}/_README.md
           # DATASET NAME: ${ISSUE_TITLE#"[README]: "}
 
@@ -41,12 +38,11 @@ jobs:
           `_README_v1-0` Initial publication generated via automation text workflow.
           EOF
 
-          # Clean up instructions from the user's generated file if they didn't delete them
+          # Clean up instruction headers from the final markdown file download
           sed -i '/### 📜 LICENSE Notice/,/---/d' output-${{ github.event.issue.number }}/_README.md
           sed -i '/👉 **INSTRUCTIONS:/d' output-${{ github.event.issue.number }}/_README.md
 
           # 2. GENERATE THE JSON COMPANION FILE
-          # Since it is a text block, we convert the raw lines into a single safe JSON string asset
           node -e '
           const fs = require("fs");
           const rawText = process.env.ISSUE_BODY || "";
@@ -77,7 +73,7 @@ jobs:
             
             The system has successfully processed your text entry. You can download the formatted bundle containing your markdown text and JSON structural file asset.
             
-            👉 **[Download Bundle Assets](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})** *(Scroll down to the **Artifacts** panel at the bottom of the landing page to download your zip).*
+            👉 **[Download Bundle Assets](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})** *(Navigate to the **Artifacts** panel at the bottom of the landing page to download your zip).*
             
             *This tracking ticket will now close.*
           token: ${{ secrets.GITHUB_TOKEN }}
