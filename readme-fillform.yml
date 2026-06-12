@@ -1,0 +1,254 @@
+name: "📝 Generate a Complete Dataset README"
+description: "Fill out this form to generate a structured README.md and JSON file for your dataset."
+title: "[README]: "
+labels: ["readme-generator"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### 🇨🇿 Czech Data Stewards Community README Generator
+        This form will generate your dataset's README. Fill in only the sections relevant to your dataset; you can leave optional sections completely blank.
+
+  - type: input
+    id: dataset_name
+    attributes:
+      label: "DATASET NAME"
+      placeholder: "e.g., Archaeological Excavation Data 2026"
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "---"
+
+  - type: textarea
+    id: authors
+    attributes:
+      label: "Authors"
+      description: "Provide one per line: First name, last name, ORCID"
+      placeholder: |
+        Jane Doe, https://orcid.org/0000-0000-0000-0000
+        John Smith, https://orcid.org/0000-0000-0000-0001
+    validations:
+      required: true
+
+  - type: input
+    id: main_contact
+    attributes:
+      label: "Main Contact Email"
+      placeholder: "email@example.cz"
+    validations:
+      required: true
+
+  - type: input
+    id: dataset_license
+    attributes:
+      label: "Dataset License"
+      value: "CC-BY 4.0"
+    validations:
+      required: true
+
+  - type: input
+    id: readme_version
+    attributes:
+      label: "README Version"
+      value: "_README_v1-0"
+    validations:
+      required: true
+
+  - type: input
+    id: pid
+    attributes:
+      label: "Persistent Identifier (PID / DOI)"
+      placeholder: "https://doi.org/10.xxxx/xxxx"
+
+  - type: input
+    id: project_website
+    attributes:
+      label: "Project Website"
+      placeholder: "https://bestproject.cz"
+
+  - type: markdown
+    attributes:
+      value: "## 📝 DESCRIPTION"
+
+  - type: textarea
+    id: brief_description
+    attributes:
+      label: "Brief Description"
+      description: "Write 2–3 sentences describing what the dataset contains and what it is used for."
+
+  - type: textarea
+    id: research_context
+    attributes:
+      label: "Research Context"
+      description: "What were the goals? What questions was the research intended to answer?"
+
+  - type: textarea
+    id: related_publications
+    attributes:
+      label: "Related Publications"
+      description: "List publications where the data were used, or that are relevant to understanding the dataset."
+      placeholder: |
+        - (Data retrieval) Citation of publication 1
+        - (Methodology instructions) Citation of publication 2
+
+  - type: markdown
+    attributes:
+      value: "## 📂 DATASET/COLLECTION CONTENTS"
+
+  - type: textarea
+    id: directory_structure
+    attributes:
+      label: "Directory Structure"
+      description: "Describe or visually map your directory structure tree."
+      value: |
+        - data/
+          - raw/ : Original, unprocessed data
+          - processed/ : Processed data
+          - final/ : Final data for analysis
+        - _README_v1-0 : This file
+        - documentation/ : Additional documentation
+        - results/ : Analysis results
+        - scripts/ : Processing scripts
+
+  - type: textarea
+    id: file_descriptions
+    attributes:
+      label: "File Descriptions"
+      description: "List data files and what they contain (File name, Description, Instructions for use)."
+      placeholder: |
+        - File_name.csv: Contains the primary survey metrics.
+
+  - type: markdown
+    attributes:
+      value: "## 📊 DATA STRUCTURE"
+
+  - type: textarea
+    id: encoding
+    attributes:
+      label: "Encoding & Formatting (e.g., Tabular Data)"
+      value: |
+        Text file encoding: UTF-8  
+        CSV delimiter: semicolon (;) or comma (,)  
+        Decimal separator: period (.) or comma (,)
+
+  - type: textarea
+    id: variable_descriptions
+    attributes:
+      label: "Variable Descriptions"
+      description: "List variables (Name, type, unit, description, value ranges)."
+      placeholder: |
+        - Variable, type, unit: Description (Value range)
+
+  - type: textarea
+    id: special_values
+    attributes:
+      label: "Special Values"
+      description: "How are missing data, unknown values, or infinity represented?"
+
+  - type: markdown
+    attributes:
+      value: "## 🔬 METHODOLOGY & PROVENANCE"
+
+  - type: input
+    id: collection_date
+    attributes:
+      label: "Collection Date Range"
+      placeholder: "from YYYYMMDD to YYYYMMDD"
+
+  - type: input
+    id: collection_location
+    attributes:
+      label: "Collection Location"
+      placeholder: "Geographic location or online"
+
+  - type: textarea
+    id: tools_for_collection
+    attributes:
+      label: "Tools for Collection"
+      description: "Software, hardware, questionnaires, etc."
+
+  - type: textarea
+    id: original_data
+    attributes:
+      label: "Original Data Details"
+      description: "Describe original data source and its DOI, if applicable."
+
+  - type: textarea
+    id: method_of_collection
+    attributes:
+      label: "Method of Collection/Production"
+      description: "Describe the specific processing step or collection workflow."
+
+  - type: markdown
+    attributes:
+      value: "## ⚙️ DATA PROCESSING"
+
+  - type: textarea
+    id: processing_workflow
+    attributes:
+      label: "Data Processing Steps"
+      description: "Describe cleaning, transformation, anonymisation, formatting steps."
+
+  - type: textarea
+    id: processing_software
+    attributes:
+      label: "Software Used"
+      description: "Software names, versions, and descriptions of use."
+      placeholder: |
+        - Software 1, version: Description
+
+  - type: textarea
+    id: data_completeness
+    attributes:
+      label: "Data Completeness & Quality"
+      description: "Limitations, integrity checks, and how quality was tested."
+
+  - type: markdown
+    attributes:
+      value: "## 🔓 REUSE & TERMS"
+
+  - type: textarea
+    id: license_terms
+    attributes:
+      label: "License and Terms of Use"
+      description: "Copyright notices or specific conditions if individual files vary."
+
+  - type: textarea
+    id: restrictions_recommendations
+    attributes:
+      label: "Restrictions and Recommendations"
+
+  - type: textarea
+    id: hardware_software_requirements
+    attributes:
+      label: "Software and Hardware Requirements to run/view data"
+
+  - type: markdown
+    attributes:
+      value: "## 📑 CITATION & ETHICS"
+
+  - type: textarea
+    id: proposed_citation
+    attributes:
+      label: "Proposed Citation"
+      description: "Provide citation string, or note if .bib/.cff files are attached."
+      value: "[Creator (Publication Year): Title. Publisher. (Resource Type). PID. Version]"
+
+  - type: textarea
+    id: ethics_personal_data
+    attributes:
+      label: "Personal and Sensitive Data Protection"
+      description: "Leave blank if your dataset does NOT contain personal/sensitive data."
+
+  - type: input
+    id: ethical_approval
+    attributes:
+      label: "Ethical Approval Reference"
+      placeholder: "Approved by committee x, number: xxx, date: YYYYMMDD."
+
+  - type: textarea
+    id: informed_consent
+    attributes:
+      label: "Informed Consent Details"
