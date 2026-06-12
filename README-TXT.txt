@@ -12,7 +12,7 @@ GUIDELINES
 - The symbol > signifies comments to the user, and should be deleted after the README is filled.
 - The symbols - - - signify separation of sections and do not need to be deleted.
 - The README file name starts with an underscore _ in order to make it appear first in the list of files, when sorted alphabetically.
-- This file is in simple text format. For markdown you can use the file [here](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/README-MD-txt.md)
+- This file is in simple text format. For markdown you can use the file here: https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/README-MD-txt.md
 - After filling in the README you can delete the first page with instructions. 
 
 - - -  YOUR TEMPLATE STARTS HERE - - -
