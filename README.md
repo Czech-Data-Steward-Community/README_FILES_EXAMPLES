@@ -5,4 +5,4 @@ This template was based on the README Template Suite for Archaeology created by 
 
 In the acknowledgement section you will find the attribution of the authors of this template already implemented. Feel free to change it accordingly, and do not forget to mention changes you did.
 
-**This work is supported by The Ministry of Education, Youth and Sports (MEYS) through the project National Repository Platform for Scientific Data no. CZ.02.01.01/00/23_014/0008787, co-funded by the European Union. ** 
+**This work is supported by The Ministry of Education, Youth and Sports (MEYS) through the project National Repository Platform for Scientific Data no. CZ.02.01.01/00/23_014/0008787, co-funded by the European Union.** 
