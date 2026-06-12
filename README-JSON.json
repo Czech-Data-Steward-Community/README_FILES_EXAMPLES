@@ -195,8 +195,8 @@
     },
     "readme_file_change_history": {
       "placeholder": [
-        "`_README_v1-0 (YYYYMMDD)` Initial publication of the dataset.",
-        "`_README_v1-1 (YYYYMMDD)` Describe changes from the previous version."
+        "_README_v1-0 (YYYYMMDD)` Initial publication of the dataset.",
+        "_README_v1-1 (YYYYMMDD)` Describe changes from the previous version."
       ]
     }
   }
