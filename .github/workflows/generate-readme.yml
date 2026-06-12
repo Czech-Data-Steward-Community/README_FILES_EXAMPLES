@@ -1,0 +1,201 @@
+name: Generate README From Form
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  build-readme:
+    if: contains(github.event.issue.labels.*.name, 'readme-generator')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Parse Issue Form Answers
+        uses: stefanbuck/github-issue-parser@v3
+        id: issue-parser
+        with:
+          template-path: .github/issue_template/readme-generator.yml
+
+      - name: Build Markdown and JSON Outputs
+        run: |
+          mkdir -p output-${{ github.event.issue.number }}
+          
+          # 1. GENERATE THE MARKDOWN README
+          cat << 'EOF' > output-${{ github.event.issue.number }}/_README.md
+          # DATASET NAME: ${{ steps.issue-parser.outputs.dataset_name }}
+
+          ## BASIC INFORMATION
+          Author(s):  
+          ${{ steps.issue-parser.outputs.authors }}
+
+          Main contact: ${{ steps.issue-parser.outputs.main_contact }}  
+          Dataset license: ${{ steps.issue-parser.outputs.dataset_license }}  
+          README version: ${{ steps.issue-parser.outputs.readme_version }}  
+          PID: ${{ steps.issue-parser.outputs.pid }}  
+          Project website: ${{ steps.issue-parser.outputs.project_website }}
+
+          ---
+
+          ## DESCRIPTION
+
+          ### Brief Description
+          ${{ steps.issue-parser.outputs.brief_description }}
+
+          ### Research Context
+          ${{ steps.issue-parser.outputs.research_context }}
+
+          ### Related Publications
+          ${{ steps.issue-parser.outputs.related_publications }}
+
+          ---
+
+          ## DATASET/COLLECTION CONTENTS
+
+          ### Directory Structure
+          ${{ steps.issue-parser.outputs.directory_structure }}
+
+          ### File Descriptions
+          ${{ steps.issue-parser.outputs.file_descriptions }}
+
+          ---
+
+          ## DATA STRUCTURE
+
+          ### Encoding
+          ${{ steps.issue-parser.outputs.encoding }}
+
+          ### Variable Descriptions
+          ${{ steps.issue-parser.outputs.variable_descriptions }}
+
+          ### Special Values
+          ${{ steps.issue-parser.outputs.special_values }}
+
+          ---
+
+          ## METHODOLOGY-PROVENANCE
+
+          ### Collection/Creation of Data
+          - Collection date: ${{ steps.issue-parser.outputs.collection_date }}
+          - Collection location: ${{ steps.issue-parser.outputs.collection_location }}
+          - Tools for collection: 
+          ${{ steps.issue-parser.outputs.tools_for_collection }}
+
+          - Original data:
+          ${{ steps.issue-parser.outputs.original_data }}
+
+          - Method of collection/production:
+          ${{ steps.issue-parser.outputs.method_of_collection }}
+
+          ---
+
+          ## DATA PROCESSING
+
+          ### Processing
+          ${{ steps.issue-parser.outputs.processing_workflow }}
+
+          ### Method of Data Processing
+          ${{ steps.issue-parser.outputs.processing_software }}
+
+          ### Data Completeness
+          ${{ steps.issue-parser.outputs.data_completeness }}
+
+          ---
+
+          ## REUSE
+
+          ### License and Terms of Use
+          ${{ steps.issue-parser.outputs.license_terms }}
+
+          ### Restrictions and Recommendations
+          ${{ steps.issue-parser.outputs.restrictions_recommendations }}
+
+          ### Software and Hardware Requirements
+          ${{ steps.issue-parser.outputs.hardware_software_requirements }}
+
+          ---
+
+          ## PROPOSED CITATION
+          ${{ steps.issue-parser.outputs.proposed_citation }}
+
+          ---
+
+          ## ETHICS AND DATA PROTECTION
+          ### Personal and Sensitive Data Protection
+          ${{ steps.issue-parser.outputs.ethics_personal_data }}
+
+          ### Ethical Approval
+          ${{ steps.issue-parser.outputs.ethical_approval }}
+
+          ### Informed Consent
+          ${{ steps.issue-parser.outputs.informed_consent }}
+
+          ---
+
+          ## ACKNOWLEDGEMENTS
+          This README was based on the template/examples authored by the **[Collective of Data Stewards of the Czech Data Stewards Community](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/Collective_datastewards.md)** and is licensed under a [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
+
+          ---
+
+          ## README FILE CHANGE HISTORY
+          `_README_v1-0` Initial publication generated via automation workflow.
+          EOF
+
+          # 2. GENERATE THE JSON COMPANION FILE
+          cat << 'EOF' > output-${{ github.event.issue.number }}/readme.json
+          {
+            "dataset_name": "${{ steps.issue-parser.outputs.dataset_name }}",
+            "basic_information": {
+              "authors": "${{ steps.issue-parser.outputs.authors }}",
+              "main_contact": "${{ steps.issue-parser.outputs.main_contact }}",
+              "dataset_license": "${{ steps.issue-parser.outputs.dataset_license }}",
+              "readme_version": "${{ steps.issue-parser.outputs.readme_version }}",
+              "pid": "${{ steps.issue-parser.outputs.pid }}",
+              "project_website": "${{ steps.issue-parser.outputs.project_website }}"
+            },
+            "description": {
+              "brief_description": "${{ steps.issue-parser.outputs.brief_description }}",
+              "research_context": "${{ steps.issue-parser.outputs.research_context }}",
+              "related_publications": "${{ steps.issue-parser.outputs.related_publications }}"
+            },
+            "dataset_collection_contents": {
+              "directory_structure": "${{ steps.issue-parser.outputs.directory_structure }}",
+              "file_descriptions": "${{ steps.issue-parser.outputs.file_descriptions }}"
+            },
+            "data_structure": {
+              "encoding": "${{ steps.issue-parser.outputs.encoding }}",
+              "variable_descriptions": "${{ steps.issue-parser.outputs.variable_descriptions }}",
+              "special_values": "${{ steps.issue-parser.outputs.special_values }}"
+            }
+          }
+          EOF
+
+      - name: Zip and Prepare Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: readme-files-issue-${{ github.event.issue.number }}
+          path: output-${{ github.event.issue.number }}/
+
+      - name: Respond with Download Link
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ### 🎉 Your Files are Ready!
+            
+            The submission has been processed. You can now download your customized markdown metadata file alongside its JSON twin.
+            
+            👉 **[Download Bundle Assets](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})** *(Navigate to the **Artifacts** section at the bottom of the landing page to download your zip folder).*
+            
+            *This request issue will now close automatically.*
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clean up and Close Issue
+        run: gh issue close ${{ github.event.issue.number }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
