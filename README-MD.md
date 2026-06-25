@@ -103,9 +103,10 @@ Project website: [https://bestproject.cz](https://bestproject.cz)
 
 ### Encoding
 
-> Fill in according to the nature of the data,
+> Fill in according to the nature of the data.
 
-[  (e.g. for tabular data)  
+[  
+(e.g. for tabular data)  
 
 Text file encoding: UTF-8  
 CSV delimiter: semicolon (;) or comma (,)  
