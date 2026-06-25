@@ -268,8 +268,8 @@ This README was based on the template/examples authored by the **[Collective of 
 
 [  
 
-_README_v1-0 (YYYYMMDD)` Initial publication of the dataset.  
-_README_v1-1 (YYYYMMDD)`  Describe changes from the previous version.  
+_README_v1-0 (YYYYMMDD) Initial publication of the dataset.  
+_README_v1-1 (YYYYMMDD) Describe changes from the previous version.  
 
 ]
 
