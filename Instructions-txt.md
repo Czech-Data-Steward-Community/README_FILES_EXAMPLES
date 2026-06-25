@@ -17,6 +17,6 @@ Guidelines:
 
 - The README file name starts with an underscore _ in order to make it appear first in the list of files, when sorted alphabetically.
 
-- This file is using markdown. By changing the blank lines, symbols and spaces you can break the format. If you wish to keep the file only as a text file this does not affect you. If you plan to use markdown, or transform the file to json or other format later, keep this in mind when editing.
+- This file is in simple text format. You can copy paste it in any editor and fill it in. If you wish to try the template using [markdown](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/README-MD.md), or [json](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/README-JSON.json), click on the equivalent links.
 
 - After filling in the README you can delete the first page with instructions.
