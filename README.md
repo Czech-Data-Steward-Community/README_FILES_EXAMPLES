@@ -6,4 +6,10 @@ This template was based on the README Template Suite for Archaeology created by 
 In the acknowledgement section you will find the attribution of the authors of this template already implemented. Feel free to change it accordingly, and do not forget to mention changes you did.
 
 ---
-**This work is supported by The Ministry of Education, Youth and Sports (MEYS) through the project National Repository Platform for Scientific Data no. CZ.02.01.01/00/23_014/0008787, co-funded by the European Union.** 
+**This project output was developed with financial contributions from the EOSC CZ initiative throught the project National Repository Platform for Research Data (CZ.02.01.01/00/23_014/0008787) funded by Programme Johannes Amos Comenius (P JAC) of the Ministry of Education, Youth and Sports of the Czech Republic (MEYS).** 
+
+<img width="1526" height="324" alt="nrp" src="https://github.com/user-attachments/assets/754aa2b7-f6c5-46ba-8b57-2d019aa0c8c5" />
+
+
+<img width="3840" height="501" alt="msmt" src="https://github.com/user-attachments/assets/e265384a-5c08-41f3-9e09-af72d5c6ae6d" />
+
