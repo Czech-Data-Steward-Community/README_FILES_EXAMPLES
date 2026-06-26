@@ -92,6 +92,21 @@ File name.format
 
 ]
 
+### Naming Conventions
+
+> Describe the file names if they are not clear and give the full name of abbreviations used.
+
+[
+Data1= dataset name explanation
+]
+
+Abbreviations
+
+[
+abbr = abbreviation
+FLN = File name
+]
+
 ---
 
 ## DATA STRUCTURE
