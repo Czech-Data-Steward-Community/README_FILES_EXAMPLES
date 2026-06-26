@@ -18,8 +18,6 @@ This template aims to help you create a README for your data. Fill in only the s
 
  YOUR TEMPLATE STARTS HERE 
 
-Specific discipline examples of this file: [add discipline]
-
 # DATASET NAME: [Data name]
 
 ## BASIC INFORMATION
@@ -42,13 +40,9 @@ Project website: [https://bestproject.cz](https://bestproject.cz)
 
 > Write 2–3 sentences describing what the dataset contains and what it is used for.
 
-[discipline specific example here]
-
 ### Research Context
 
 > Write a brief description of the research project in which the data were produced. What were the goals? What questions was the research intended to answer?
-
-[discipline specific example here]
 
 ### Related Publications
 
@@ -133,8 +127,6 @@ Decimal separator: period (.) or comma (,)
 
 > Explain how special values are represented in the data, such as missing data, unknown values, infinity, etc. Specify which concrete values or codes are used for these purposes.
 
-[discipline specific example here]
-
 ---
 
 ## METHODOLOGY-PROVENANCE
@@ -160,13 +152,9 @@ Decimal separator: period (.) or comma (,)
 
 > Describe the original data including DOI, if available
 
-[discipline specific example here]
-
 - Method of collection/production:
 
 > Describe the method of data collection/creation
-
-[discipline specific example here]
 
 ---
 
@@ -193,8 +181,6 @@ Description
 
 > Describe data quality, known limitations, missing values, etc. How was the quality tested? Did you perform an integrity check?
 
-[discipline specific example here]
-
 ---
 
 ## REUSE
@@ -203,13 +189,9 @@ Description
 
 > Include the license text or link where it can be found, any copyright notice and any specific conditions for use of the data, for example if individual files are licensed differently.
 
-[discipline specific example here]
-
 ### Restrictions and Recommendations
 
 > State any additional restrictions or recommendations for use.  
-
-[discipline specific example here]
 
 ### Software and Hardware Requirements
 
@@ -251,8 +233,6 @@ OR
 ### Informed Consent
 
 > Provide information on whether and how informed consent was obtained from participants.
-
-[discipline specific example here]
 
 ---
 
