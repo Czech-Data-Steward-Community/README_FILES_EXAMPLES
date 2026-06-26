@@ -3,13 +3,17 @@ name: Generate Final Templates
 on:
   push:
     branches:
-      - main  # Changes this if your main branch is named 'master'
+      - main
     paths:
       - 'core-file.md'
       - 'guide-md.md'
       - 'guide-text.txt'
       - 'guide-json.json'
       - 'json-footer.json'
+
+# This explicitly gives the script permission to write to the repository
+permissions:
+  contents: write
 
 jobs:
   assemble:
