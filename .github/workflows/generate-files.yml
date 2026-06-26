@@ -10,8 +10,8 @@ on:
       - 'guide-text.txt'
       - 'guide-json.json'
       - 'json-footer.json'
+  workflow_dispatch: # Allows you to trigger this manually from the Actions tab
 
-# This explicitly gives the script permission to write to the repository
 permissions:
   contents: write
 
