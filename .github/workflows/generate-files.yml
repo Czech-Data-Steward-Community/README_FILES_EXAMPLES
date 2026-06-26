@@ -1,0 +1,38 @@
+name: Generate Final Templates
+
+on:
+  push:
+    branches:
+      - main  # Changes this if your main branch is named 'master'
+    paths:
+      - 'core-file.md'
+      - 'guide-md.md'
+      - 'guide-text.txt'
+      - 'guide-json.json'
+      - 'json-footer.json'
+
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Combine files
+        run: |
+          # Create the final Markdown file
+          cat guide-md.md core-file.md > README-MD.md
+
+          # Create the final Text file
+          cat guide-text.txt core-file.md > README-TXT.txt
+
+          # Create the final JSON file
+          cat guide-json.json core-file.md json-footer.json > README-JSON.json
+
+      - name: Commit and push generated files
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add README-MD.md README-TXT.txt README-JSON.json
+          git commit -m "Automated build: Updated final template files" || exit 0
+          git push
