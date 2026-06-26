@@ -12,6 +12,7 @@
   ],
   "template": {
     "dataset_name": "[Data name]",
+    "comment": "> Add the name of the file that you are describing. If you describe the whole record in one readme file, you will later need to answer the questions for all datasets.",
     "basic_information": {
       "authors": "[\nFirst name, last name, ORCID;  \nFirst name, last name, ORCID\n]",
       "main_contact": "[email@example.cz](mailto:email@example.cz)",
