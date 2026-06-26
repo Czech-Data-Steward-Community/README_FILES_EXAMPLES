@@ -42,8 +42,12 @@
         "example": "[\n- data/\n  - raw/ : Original, unprocessed data\n  - processed/ : Processed data\n  - final/ : Final data for analysis\n- _README_v1-0 : This file\n- documentation/ : Additional documentation\n- results/ : Analysis results\n- scripts/ : Processing scripts  \n]"
       },
       "file_descriptions": {
-        "comment": "List the data files showing what each file contains. For large datasets, refer to an accompanying file description. If the content is evident from the file name, describe only the directory structure.",
-        "example": "[\n- File name.format\n  - Description\n  - Instructions for use\n  - xxxxx\n    \n- File name.format\n  - Description\n  - Instructions for use\n  - xxxxx  \n]"
+        "comment": "List the data files showing what each file contains. For large datasets, refer to an accompanying file description. If the content is evident from the file name, describe only the directory structure. Don't forget to explain any file names that are not clear.",
+        "example": "[\n\nFile name.format\n- Explanation of file name (if not clear), (e.g. Spctra_JV_2026 = spectra_name of collector_date of collection)\n- Description\n- Instructions for use\n- xxxxx\n\nFile name.format\n- Explanation of file name (if not clear), (e.g. Spctra_JV_2026 = spectra_name of collector_date of collection)\n- Description\n- Instructions for use\n- xxxxx  \n]"
+      },
+      "abbreviations": {
+        "comment": "Explain any abbreviations used in the file name or inside the data file itself.",
+        "example": "[\nabbr = abbreviation\nFLN = File name\n]"
       }
     },
     "data_structure": {
