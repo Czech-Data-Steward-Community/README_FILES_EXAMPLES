@@ -1,31 +1,19 @@
 {
-  "template_metadata": {
-    "title": "README file template and examples",
-    "authors": "Collective of Data Stewards of the Czech Data Stewards Community",
-    "license": {
-      "name": "Creative Commons Attribution 4.0 International License (CC BY 4.0)",
-      "url": "https://creativecommons.org/licenses/by/4.0/"
-    },
-    "authors_list_url": "https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/Collective_datastewards.md",
-    "attribution": "Based on the README Template Suite for Archaeology created by Tobiáš Kolmačka (ORCID: 0009-0006-7760-7320) developed for the Institute of Archaeology of the Czech Academy of Sciences (IAP = ARÚ).",
-    "purpose": "This template aims to help you create a README for your data. Fill in only the sections that are relevant to your dataset; delete the rest.",
-    "guidelines": [
-      "Anything inside brackets [ ] is an example and should be replaced with real answers or be deleted.",
-      "The symbol > signifies comments to the user, and should be deleted after the README is filled.",
-      "The symbols - - - signify separation of sections and do not need to be deleted.",
-      "The README file name starts with an underscore _ in order to make it appear first in the list of files, when sorted alphabetically.",
-      "This file is using markdown. By changing the blank lines, symbols and spaces you can break the format. If you wish to keep the file only as a text file this does not affect you. If you plan to use markdown, or transform the file to json or other format later, keep this in mind when editing.",
-      "After filling in the README you can delete the first page with instructions."
-    ],
-    "discipline_specific_examples_placeholder": "[add discipline]"
+  "license_notice": {
+    "text": "This README template containing examples is authored by the **Collective of Data Stewards of the Czech Data Stewards Community** and is licensed under a [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). The full list of authors can be found here: [https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/Collective_datastewards.md](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/Collective_datastewards.md)\n\nThis template was based on the README Template Suite for Archaeology created by Tobiáš Kolmačka (ORCID: 0009-0006-7760-7320) and developed to support researchers at the Institute of Archaeology of the Czech Academy of Sciences (IAP = ARÚ).\n\nThis template aims to help you create a README for your data. Fill in only the sections that are relevant to your dataset; delete the rest."
   },
-  "dataset_name": "[Data name]",
-  "sections": {
+  "guidelines": [
+    "Anything inside brackets [ ] is an example and should be replaced with real answers or be deleted.",
+    "The symbol > signifies comments to the user, and should be deleted after the README is filled.",
+    "The symbols - - - signify separation of sections and do not need to be deleted.",
+    "The README file name starts with an underscore _ in order to make it appear first in the list of files, when sorted alphabetically.",
+    "For simple text format use this [file](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/README-TXT.txt) and for markdown template us this [file](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/README-MD.md)",
+    "After filling in the README you can delete the first page with instructions."
+  ],
+  "template": {
+    "dataset_name": "[Data name]",
     "basic_information": {
-      "authors": [
-        "[First name, last name, ORCID]",
-        "[First name, last name, ORCID]"
-      ],
+      "authors": "[\nFirst name, last name, ORCID;  \nFirst name, last name, ORCID\n]",
       "main_contact": "[email@example.cz](mailto:email@example.cz)",
       "dataset_license": "[CC-BY 4.0]",
       "readme_version": "[_README_v1-0]",
@@ -34,16 +22,14 @@
     },
     "description": {
       "brief_description": {
-        "comment": "Write 2–3 sentences describing what the dataset contains and what it is used for.",
-        "placeholder": "[discipline specific example here]"
+        "comment": "Write 2–3 sentences describing what the dataset contains and what it is used for."
       },
       "research_context": {
-        "comment": "Write a brief description of the research project in which the data were produced. What were the goals? What questions was the research intended to answer?",
-        "placeholder": "[discipline specific example here]"
+        "comment": "Write a brief description of the research project in which the data were produced. What were the goals? What questions was the research intended to answer?"
       },
       "related_publications": {
         "comment": "List of publications (articles and data) where the data were used or presented, or if they are relevant to understanding the dataset.",
-        "placeholders": [
+        "examples": [
           "[(Annotation, e.g. Data retrieval) Citation of publication 1]",
           "[(Annotation, e.g. Methodology instructions) Citation of publication 2]"
         ]
@@ -52,80 +38,41 @@
     "dataset_collection_contents": {
       "directory_structure": {
         "comment": "Describe the directory structure. If the structure is complex, you may describe it in text and/or visually using a directory tree, like the one below.",
-        "placeholder_tree": [
-          "- data/",
-          "  - raw/ : Original, unprocessed data",
-          "  - processed/ : Processed data",
-          "  - final/ : Final data for analysis",
-          "- _README_v1-0 : This file",
-          "- documentation/ : Additional documentation",
-          "- results/ : Analysis results",
-          "- scripts/ : Processing scripts"
-        ]
+        "example": "[\n- data/\n  - raw/ : Original, unprocessed data\n  - processed/ : Processed data\n  - final/ : Final data for analysis\n- _README_v1-0 : This file\n- documentation/ : Additional documentation\n- results/ : Analysis results\n- scripts/ : Processing scripts  \n]"
       },
       "file_descriptions": {
         "comment": "List the data files showing what each file contains. For large datasets, refer to an accompanying file description. If the content is evident from the file name, describe only the directory structure.",
-        "placeholder": [
-          "- File name.format",
-          "- Description",
-          "- Instructions for use",
-          "- xxxxx",
-          "- File name.format",
-          "- Description",
-          "- Instructions for use",
-          "- xxxxx"
-        ]
+        "example": "[\n- File name.format\n  - Description\n  - Instructions for use\n  - xxxxx\n    \n- File name.format\n  - Description\n  - Instructions for use\n  - xxxxx  \n]"
       }
     },
     "data_structure": {
       "encoding": {
-        "comment": "Fill in according to the nature of the data, (e.g. for tabular data)",
-        "placeholder": {
-          "text_file_encoding": "UTF-8",
-          "csv_delimiter": "semicolon (;) or comma (,)",
-          "decimal_separator": "period (.) or comma (,)"
-        }
+        "comment": "Fill in according to the nature of the data.",
+        "example": "[  \n(e.g. for tabular data)  \n\nText file encoding: UTF-8  \nCSV delimiter: semicolon (;) or comma (,)\nDecimal separator: period (.) or comma (,)  \n]"
       },
       "variable_descriptions": {
         "comment": "List the variables of the data. Include the variable name, data type, unit (if relevant), a brief description, and examples or value ranges where applicable.",
-        "placeholder": [
-          {
-            "variable_type_unit": "Variable, type, unit",
-            "description": "Description",
-            "examples_or_value_range": "Examples / value range"
-          },
-          {
-            "variable_type_unit": "Variable, type, unit",
-            "description": "Description",
-            "examples_or_value_range": "Examples / value range"
-          }
-        ]
+        "example": "[\n  \n- Variable, type, unit\n- Description\n- Examples / value range\n- Variable, type, unit\n- Description\n- Examples / value range  \n  \n]"
       },
       "special_values": {
-        "comment": "Explain how special values are represented in the data, such as missing data, unknown values, infinity, etc. Specify which concrete values or codes are used for these purposes.",
-        "placeholder": "[discipline specific example here]"
+        "comment": "Explain how special values are represented in the data, such as missing data, unknown values, infinity, etc. Specify which concrete values or codes are used for these purposes."
       }
     },
     "methodology_provenance": {
       "collection_creation_of_data": {
         "comment": "Describe how the data were obtained: methods, tools, time period, collection location, etc.",
-        "collection_date": "[from YYYYMMDD to YYYYMMDD]",
-        "collection_location": "[geographic location, or online]",
-        "tools_for_collection": {
-          "placeholder_list": [
-            "software",
-            "hardware",
-            "questionnaires",
-            "etc. used"
-          ]
-        },
-        "original_data": {
-          "comment": "Describe the original data including DOI, if available",
-          "placeholder": "[discipline specific example here]"
-        },
-        "method_of_collection_production": {
-          "comment": "Describe the method of data collection/creation",
-          "placeholder": "[discipline specific example here]"
+        "fields": {
+          "collection_date": "[from YYYYMMDD to YYYYMMDD]",
+          "collection_location": "[geographic location, or online]",
+          "tools_for_collection": {
+            "example": "[\n- software\n- hardware\n- questionnaires\n- etc. used  \n]"
+          },
+          "original_data": {
+            "comment": "Describe the original data including DOI, if available"
+          },
+          "method_of_collection_production": {
+            "comment": "Describe the method of data collection/creation"
+          }
         }
       }
     },
@@ -135,45 +82,26 @@
       },
       "method_of_data_processing": {
         "comment": "Add the software names (with version) used for the data processing. You can also simply describe the processing workflow, if no software was used.",
-        "placeholder": [
-          {
-            "software_and_version": "Software 1, version",
-            "description": "Description"
-          },
-          {
-            "software_and_version": "Software 2, version",
-            "description": "Description"
-          }
-        ]
+        "example": "[\n- Software 1, version  \nDescription\n- Software 2, version  \nDescription  \n]"
       },
       "data_completeness": {
-        "comment": "Describe data quality, known limitations, missing values, etc. How was the quality tested? Did you perform an integrity check?",
-        "placeholder": "[discipline specific example here]"
+        "comment": "Describe data quality, known limitations, missing values, etc. How was the quality tested? Did you perform an integrity check?"
       }
     },
     "reuse": {
       "license_and_terms_of_use": {
-        "comment": "Include the license text or link where it can be found, any copyright notice and any specific conditions for use of the data, for example if individual files are licensed differently.",
-        "placeholder": "[discipline specific example here]"
+        "comment": "Include the license text or link where it can be found, any copyright notice and any specific conditions for use of the data, for example if individual files are licensed differently."
       },
       "restrictions_and_recommendations": {
-        "comment": "State any additional restrictions or recommendations for use.",
-        "placeholder": "[discipline specific example here]"
+        "comment": "State any additional restrictions or recommendations for use."
       },
       "software_and_hardware_requirements": {
         "comment": "Describe the software and tools required to work with the data.",
-        "placeholder": {
-          "software": "",
-          "hardware": ""
-        }
+        "example": "[\n- Software:\n- Hardware:  \n]"
       }
     },
     "proposed_citation": {
-      "comment": "You may also include a dataset citation of a specific style, or use the template below: OR Please provide the dataset citation metadata in .bib and/or .cff format and reference the corresponding file(s) in the README.",
-      "placeholders": [
-        "[Creator (Publication Year): Title. Publisher. (Resource Type). PID. Version]",
-        "[Citation for this dataset, compatible with Zotero and similar managers, are provided in the `_citation.bib` and/or `_citation.cff` file.]"
-      ]
+      "comment": "You may also include a dataset citation of a specific style, or use the template below:  \n[Creator (Publication Year): Title. Publisher. (Resource Type). PID. Version]  \nOR  \nPlease provide the dataset citation metadata in `.bib` and/or `.cff` format and reference the corresponding file(s) in the README.  \n[Citation for this dataset, compatible with Zotero and similar managers, are provided in the `_citation.bib` and/or `_citation.cff` file.]"
     },
     "ethics_and_data_protection": {
       "comment": "Fill in only if the data contain personal data or sensitive information. If the data contain no personal data, delete this section.",
@@ -181,23 +109,18 @@
         "comment": "Describe how the protection of personal/sensitive data was ensured, if the data contains sensitive information."
       },
       "ethical_approval": {
-        "comment": "If ethical approval was required, state:",
-        "placeholder": "[Approved by the ethics committee name, approval number: xxx, date: YYYYMMDD.]"
+        "comment": "If ethical approval was required, state:  ",
+        "example": "[Approved by the ethics committee name, approval number: xxx, date: YYYYMMDD.]"
       },
       "informed_consent": {
-        "comment": "Provide information on whether and how informed consent was obtained from participants.",
-        "placeholder": "[discipline specific example here]"
+        "comment": "Provide information on whether and how informed consent was obtained from participants."
       }
     },
     "acknowledgements": {
-      "comment": "You may thank collaborators, research participants, funding providers, etc.",
-      "text": "This README was based on the template/examples authored by the [Collective of Data Stewards of the Czech Data Stewards Community](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/Collective_datastewards.md) and is licensed under a [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/)."
+      "text": "This README was based on the template/examples authored by the **[Collective of Data Stewards of the Czech Data Stewards Community](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/Collective_datastewards.md)** and is licensed under a [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/)."
     },
     "readme_file_change_history": {
-      "placeholder": [
-        "_README_v1-0 (YYYYMMDD)` Initial publication of the dataset.",
-        "_README_v1-1 (YYYYMMDD)` Describe changes from the previous version."
-      ]
+      "example": "[\n`_README_v1-0 (YYYYMMDD)` Initial publication of the dataset.  \n`_README_v1-1 (YYYYMMDD)`  Describe changes from the previous version.  \n]"
     }
   }
 }
