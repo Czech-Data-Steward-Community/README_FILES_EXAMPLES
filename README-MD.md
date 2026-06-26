@@ -20,6 +20,8 @@ This template aims to help you create a README for your data. Fill in only the s
 
 # DATASET NAME: [Data name]
 
+> Add the name of the file that you are describing. If you describe the whole record in one readme file, you will later need to answer the questions for all datasets.
+
 ## BASIC INFORMATION
 
 Author(s):  
