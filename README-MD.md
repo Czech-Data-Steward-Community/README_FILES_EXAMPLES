@@ -76,20 +76,33 @@ Project website: [https://bestproject.cz](https://bestproject.cz)
 
 ### File Descriptions
   
-> List the data files showing what each file contains. For large datasets, refer to an accompanying file description. If the content is evident from the file name, describe only the directory structure.
+> List the data files showing what each file contains. For large datasets, refer to an accompanying file description. If the content is evident from the file name, describe only the directory structure. Don't forget to explain any file names that are not clear.
 
 [
 
-- File name.format
-  - Description
-  - Instructions for use
-  - xxxxx
-    
-- File name.format
-  - Description
-  - Instructions for use
-  - xxxxx  
+File name.format
+- Explanation of file name (if not clear), (e.g. Spctra_JV_2026 = spectra_name of collector_date of collection)
+- Description
+- Instructions for use
+- xxxxx
 
+File name.format
+- Explanation of file name (if not clear), (e.g. Spctra_JV_2026 = spectra_name of collector_date of collection)
+- Description
+- Instructions for use
+- xxxxx  
+
+]
+
+### Naming Conventions
+
+> Explain any abbreviations used in the file name or inside the data file itself.
+
+Abbreviations
+
+[
+abbr = abbreviation
+FLN = File name
 ]
 
 ---
