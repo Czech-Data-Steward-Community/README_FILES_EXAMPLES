@@ -91,8 +91,10 @@ File name.format
 #### Abbreviations
 
 [
-abbr = abbreviation
-FLN = File name
+
+abbr = abbreviation  
+FLN = File name  
+
 ]
 
 ---
