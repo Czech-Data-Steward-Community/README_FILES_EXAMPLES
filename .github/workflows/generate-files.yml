@@ -45,8 +45,8 @@ jobs:
           // Strip the extra outer quotes automatically added by stringify
           const coreJsonString = escapedCore.substring(1, escapedCore.length - 1);
           
-          // Seamlessly stitch the start, the escaped content, and close the JSON block inline
-          const jsonFooter = "\n  }\n}";
+          // Seamlessly stitch the start, the escaped content, add the missing closing quote, and close the JSON object
+          const jsonFooter = "\"\n  }\n}";
           fs.writeFileSync("README-JSON.json", jsonStartRaw + coreJsonString + jsonFooter);
           '
 
@@ -55,5 +55,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add README-MD.md README-TXT.txt README-JSON.json
-          git diff-index --quiet HEAD || git commit -m "Automated build: Updated final template files with valid JSON formatting"
+          git diff-index --quiet HEAD || git commit -m "Automated build: Fixed missing quote in JSON template file"
           git push
