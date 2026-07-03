@@ -3,6 +3,7 @@ name: Generate README From Markdown Issue
 on:
   issues:
     types: [opened]
+  workflow_dispatch: # Allows manual trigger execution inside Actions UI
 
 jobs:
   build-readme:
@@ -26,10 +27,10 @@ jobs:
         run: |
           mkdir -p workspace
           
-          # Clean title prefix if it exists
+          # Clean title prefix safely
           CLEAN_TITLE=$(echo "$ISSUE_TITLE" | sed 's/\[README\]: //g')
 
-          # 1. GENERATE THE MARKDOWN README (Removed quotes around EOF to allow variable injection)
+          # 1. GENERATE THE MARKDOWN README (Unquoted heredoc allows environment variables to resolve)
           cat << EOF > workspace/_README.md
           # DATASET NAME: $CLEAN_TITLE
 
