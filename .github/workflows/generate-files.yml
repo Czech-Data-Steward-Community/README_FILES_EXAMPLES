@@ -37,24 +37,23 @@ jobs:
           const txtStart = fs.readFileSync("guide-text.txt", "utf8");
           fs.writeFileSync("README-TXT.txt", txtStart + coreMd);
           
-          // 3. Create the final JSON file safely using built-in object structures
+          // 3. Create the final JSON file split cleanly into an array of lines
           const jsonStartRaw = fs.readFileSync("guide-json.json", "utf8").trim();
           
           // Strip the incomplete trailing key to turn guide-json.json into a perfectly valid object
-          // This safely handles whether it ends with a quote or a comma.
           const validBaseJsonString = jsonStartRaw.replace(/,\s*"template"\s*:\s*\{\s*"license_and_content"\s*:\s*"$/, "") + "\n}";
           
           try {
             const jsonObject = JSON.parse(validBaseJsonString);
             
-            // Re-inject the template configuration cleanly through standard object notation
+            // Split the markdown content into an array of lines so it structures beautifully in JSON
             jsonObject.template = {
-              license_and_content: coreMd
+              license_and_content: coreMd.split(/\r?\n/)
             };
             
-            // This outputs a perfectly indented, 100% syntactically valid JSON file automatically
+            // Output nicely formatted, multi-line JSON
             fs.writeFileSync("README-JSON.json", JSON.stringify(jsonObject, null, 2));
-            console.log("JSON generated successfully.");
+            console.log("JSON generated successfully as an array.");
           } catch (err) {
             console.error("Failed to parse the base JSON template:", err.message);
             process.exit(1);
@@ -66,5 +65,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add README-MD.md README-TXT.txt README-JSON.json
-          git diff-index --quiet HEAD || git commit -m "Automated build: Native JSON engine serialization patch"
+          git diff-index --quiet HEAD || git commit -m "Automated build: Readable JSON multi-line array conversion"
           git push
