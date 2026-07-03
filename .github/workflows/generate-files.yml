@@ -9,7 +9,6 @@ on:
       - 'guide-md.md'
       - 'guide-text.txt'
       - 'guide-json.json'
-      - 'json-footer.json'
   workflow_dispatch: # Allows you to trigger this manually from the Actions tab
 
 permissions:
@@ -38,16 +37,25 @@ jobs:
           const txtStart = fs.readFileSync("guide-text.txt", "utf8");
           fs.writeFileSync("README-TXT.txt", txtStart + coreMd);
           
-          // 3. Create the final JSON file safely escaping markdown quirks
-          const jsonStartRaw = fs.readFileSync("guide-json.json", "utf8");
-          const jsonEndRaw = fs.readFileSync("json-footer.json", "utf8");
+          // 3. Create the final JSON file using robust JSON parsing
+          const jsonStartRaw = fs.readFileSync("guide-json.json", "utf8").trim();
           
-          // Use JSON.stringify to safely escape quotes, tabs, and line breaks in the Markdown text
-          const escapedCore = JSON.stringify(coreMd);
-          // Strip the extra outer quotes automatically added by stringify
-          const coreJsonString = escapedCore.substring(1, escapedCore.length - 1);
+          // Clean up the trailing unclosed quote from guide-json.json to make it a valid base object
+          let validJsonStart = jsonStartRaw;
+          if (validJsonStart.endsWith("\"")) {
+             validJsonStart = validJsonStart.substring(0, validJsonStart.lastIndexOf(","));
+             validJsonStart += "\n  }\n}";
+          }
           
-          fs.writeFileSync("README-JSON.json", jsonStartRaw + coreJsonString + jsonEndRaw);
+          // Parse base layout framework safely into a JavaScript object
+          const jsonObject = JSON.parse(validJsonStart);
+          
+          // Map core markdown string directly to the designated schema attribute
+          if (!jsonObject.template) jsonObject.template = {};
+          jsonObject.template.license_and_content = coreMd;
+          
+          // Safely write the clean, fully-serialized JSON configuration
+          fs.writeFileSync("README-JSON.json", JSON.stringify(jsonObject, null, 2));
           '
 
       - name: Commit and push generated files
@@ -55,5 +63,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add README-MD.md README-TXT.txt README-JSON.json
-          git commit -m "Automated build: Updated final template files" || exit 0
+          git commit -m "Automated build: Updated final template files with valid JSON format" || exit 0
           git push
