@@ -7,6 +7,5 @@
     "The README file name starts with an underscore _ in order to make it appear first in the list of files, when sorted alphabetically.",
     "For simple text format use this [file](https://github.com/Czech-Data-Steward-Community/README_FILES_EXAMPLES/blob/main/_README-TXT.txt) and for markdown template use this [file](https://github.com/Czech-Data-Steward-Community/README_FILES_EXAMPLES/blob/main/_README-MD.md)",
     "After filling in the README you can delete the first page with instructions or remove this guidelines array from your JSON data."
-  ],
-  "template": {
-    "license_and_content": "
+  ]
+}
