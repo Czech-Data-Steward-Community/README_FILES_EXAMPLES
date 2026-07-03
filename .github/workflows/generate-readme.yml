@@ -9,8 +9,6 @@ jobs:
     if: contains(github.event.issue.labels.*.name, 'readme-generator') || contains(github.event.issue.title, '[README]')
     runs-on: ubuntu-latest
     
-    # 🔐 THIS BYPASSES THE GREYED-OUT REPO SETTINGS:
-    # Explicitly grants write access to this single running script
     permissions:
       issues: write
       contents: write
@@ -28,11 +26,14 @@ jobs:
         run: |
           mkdir -p workspace
           
-          # 1. GENERATE THE MARKDOWN README
-          cat << 'EOF' > workspace/_README.md
-          # DATASET NAME: ${ISSUE_TITLE#"[README]: "}
+          # Clean title prefix if it exists
+          CLEAN_TITLE=$(echo "$ISSUE_TITLE" | sed 's/\[README\]: //g')
 
-          ${ISSUE_BODY}
+          # 1. GENERATE THE MARKDOWN README (Removed quotes around EOF to allow variable injection)
+          cat << EOF > workspace/_README.md
+          # DATASET NAME: $CLEAN_TITLE
+
+          $ISSUE_BODY
           
           ---
           ## ACKNOWLEDGEMENTS
@@ -40,25 +41,63 @@ jobs:
 
           ---
           ## README FILE CHANGE HISTORY
-          `_README_v1-0` Initial publication generated via automation text workflow.
+          \`_README_v1-0\` Initial publication generated via automation text workflow.
           EOF
 
           # Clean up instruction headers from the final file download asset
           sed -i '/### 📜 LICENSE Notice/,/---/d' workspace/_README.md
-          sed -i '/👉 **INSTRUCTIONS:/d' workspace/_README.md
+          sed -i '/👉 \*\*INSTRUCTIONS:/d' workspace/_README.md
 
-          # 2. GENERATE THE JSON COMPANION FILE
+          # 2. GENERATE THE STRUCTURAL JSON COMPANION FILE
           node -e '
           const fs = require("fs");
           const rawText = process.env.ISSUE_BODY || "";
           
-          const data = {
+          const structuredData = {
             dataset_title: process.env.ISSUE_TITLE ? process.env.ISSUE_TITLE.replace("[README]: ", "") : "Untitled Dataset",
             generated_at: new Date().toISOString().split("T")[0],
-            raw_metadata_content: rawText.split("\n").map(line => line.trim()).filter(line => line.length > 0)
+            basic_information: {},
+            description: {},
+            unmapped_lines: []
           };
           
-          fs.writeFileSync("workspace/readme.json", JSON.stringify(data, null, 2));
+          const lines = rawText.split(/\r?\n/);
+          let activeSection = "root";
+          let lastBlockKey = null;
+          
+          lines.forEach(line => {
+            const trimmed = line.trim();
+            if (!trimmed || trimmed === "---" || trimmed.startsWith(">")) return;
+            
+            if (trimmed.toUpperCase().includes("BASIC INFORMATION")) { activeSection = "basic"; return; }
+            if (trimmed.toUpperCase().includes("DESCRIPTION")) { activeSection = "desc"; return; }
+            if (trimmed.startsWith("## ") || trimmed.startsWith("# ")) { activeSection = "other"; return; }
+            
+            if (activeSection === "basic") {
+              if (trimmed.includes(":")) {
+                const parts = trimmed.split(":");
+                const label = parts[0].trim();
+                const value = parts.slice(1).join(":").trim();
+                const jsonKey = label.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "");
+                structuredData.basic_information[jsonKey] = value.startsWith("[") && value.endsWith("]") ? "" : value;
+              }
+            } else if (activeSection === "desc") {
+              if (trimmed.startsWith("### ")) {
+                const subheader = trimmed.replace("###", "").trim();
+                lastBlockKey = subheader.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "");
+                structuredData.description[lastBlockKey] = "";
+              } else if (lastBlockKey) {
+                structuredData.description[lastBlockKey] += (structuredData.description[lastBlockKey] ? " " : "") + trimmed;
+              }
+            } else {
+              if (!trimmed.startsWith("[") && !trimmed.startsWith("]")) {
+                structuredData.unmapped_lines.push(trimmed);
+              }
+            }
+          });
+          
+          fs.writeFileSync("workspace/readme.json", JSON.stringify(structuredData, null, 2));
+          console.log("Structured metadata schema created successfully.");
           '
 
       - name: Zip and Prepare Artifacts
