@@ -25,3 +25,6 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+### Automation & Tooling Notice
+The GitHub Actions automation workflows (`generate-files.yml`) and compilation helper scripts contained in this repository utilize public-domain, AI-generated utility code. These operational assembly scripts are free of restrictive authorship claims and are made available directly under the baseline Apache License 2.0 terms governing the repository's structural assets.
