@@ -1,4 +1,4 @@
-name: Generate README From Markdown Issue
+name: Generate Final Templates
 
 on:
   issues:
