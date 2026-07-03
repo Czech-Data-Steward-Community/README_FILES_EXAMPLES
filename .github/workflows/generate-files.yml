@@ -1,124 +1,92 @@
 name: Generate Final Templates
 
 on:
-  issues:
-    types: [opened]
+  push:
+    branches:
+      - main
+    paths:
+      - 'core-file.md'
+      - 'guide-md.md'
+      - 'guide-text.txt'
+      - 'guide-json.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
-  build-readme:
-    if: contains(github.event.issue.labels.*.name, 'readme-generator') || contains(github.event.issue.title, '[README]')
+  assemble:
     runs-on: ubuntu-latest
-    
-    permissions:
-      issues: write
-      contents: write
-      actions: write
-
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Process Text Template and Build Outputs
-        env:
-          ISSUE_BODY: ${{ github.event.issue.body }}
-          ISSUE_TITLE: ${{ github.event.issue.title }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
+      - name: Combine files
         run: |
-          mkdir -p workspace
-          
-          # 1. GENERATE THE MARKDOWN README
-          cat << 'EOF' > workspace/_README.md
-          # DATASET NAME: ${ISSUE_TITLE#"[README]: "}
-
-          ${ISSUE_BODY}
-          
-          ---
-          ## ACKNOWLEDGEMENTS
-          This README was based on the template/examples authored by the **[Collective of Data Stewards of the Czech Data Stewards Community](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/Collective_datastewards.md)** and is licensed under a [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
-
-          ---
-          ## README FILE CHANGE HISTORY
-          `_README_v1-0` Initial publication generated via automation text workflow.
-          EOF
-
-          # Clean up instruction headers from the final file download asset
-          sed -i '/### 📜 LICENSE Notice/,/---/d' workspace/_README.md
-          sed -i '/👉 **INSTRUCTIONS:/d' workspace/_README.md
-
-          # 2. GENERATE THE STRUCTURAL JSON COMPANION FILE
           node -e '
           const fs = require("fs");
-          const rawText = process.env.ISSUE_BODY || "";
+          const coreMd = fs.readFileSync("core-file.md", "utf8");
           
-          const structuredData = {
-            dataset_title: process.env.ISSUE_TITLE ? process.env.ISSUE_TITLE.replace("[README]: ", "") : "Untitled Dataset",
-            generated_at: new Date().toISOString().split("T")[0],
-            basic_information: {},
-            description: {},
-            unmapped_lines: []
-          };
+          // 1. Create the final Markdown file
+          const mdStart = fs.readFileSync("guide-md.md", "utf8");
+          fs.writeFileSync("README-MD.md", mdStart + coreMd);
           
-          const lines = rawText.split(/\r?\n/);
-          let activeSection = "root";
-          let lastBlockKey = null;
+          // 2. Create the final Text file
+          const txtStart = fs.readFileSync("guide-text.txt", "utf8");
+          fs.writeFileSync("README-TXT.txt", txtStart + coreMd);
           
-          lines.forEach(line => {
-            const trimmed = line.trim();
-            if (!trimmed || trimmed === "---" || trimmed.startsWith(">")) return;
+          // 3. Read valid JSON file directly and parse structurally
+          try {
+            const jsonObject = JSON.parse(fs.readFileSync("guide-json.json", "utf8"));
+            const lines = coreMd.split(/\r?\n/);
+            const templateSchema = { basic_information: {}, description: {}, metadata: {} };
+            let currentSection = "metadata";
             
-            if (trimmed.toUpperCase().includes("BASIC INFORMATION")) { activeSection = "basic"; return; }
-            if (trimmed.toUpperCase().includes("DESCRIPTION")) { activeSection = "desc"; return; }
-            if (trimmed.startsWith("## ") || trimmed.startsWith("# ")) { activeSection = "other"; return; }
-            
-            if (activeSection === "basic") {
-              if (trimmed.includes(":")) {
+            lines.forEach(line => {
+              const trimmed = line.trim();
+              if (!trimmed || trimmed === "---" || trimmed.startsWith("# YOUR TEMPLATE")) return;
+              
+              if (trimmed.startsWith("## BASIC INFORMATION")) { currentSection = "basic_information"; return; }
+              if (trimmed.startsWith("## DESCRIPTION")) { currentSection = "description"; return; }
+              
+              if (currentSection === "basic_information" && trimmed.includes(":")) {
                 const parts = trimmed.split(":");
-                const label = parts[0].trim();
-                const value = parts.slice(1).join(":").trim();
-                const jsonKey = label.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "");
-                structuredData.basic_information[jsonKey] = value.startsWith("[") && value.endsWith("]") ? "" : value;
+                const label = parts[0].trim().replace(":", "");
+                const rawValue = parts.slice(1).join(":").trim();
+                const cleanKey = label.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "");
+                const bracketMatch = rawValue.match(/^\[(.*?)\]/);
+                templateSchema.basic_information[cleanKey] = {
+                  label: label,
+                  placeholder: bracketMatch ? bracketMatch[1] : rawValue,
+                  value: ""
+                };
               }
-            } else if (activeSection === "desc") {
-              if (trimmed.startsWith("### ")) {
-                const subheader = trimmed.replace("###", "").trim();
-                lastBlockKey = subheader.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "");
-                structuredData.description[lastBlockKey] = "";
-              } else if (lastBlockKey) {
-                structuredData.description[lastBlockKey] += (structuredData.description[lastBlockKey] ? " " : "") + trimmed;
+              
+              if (currentSection === "description" && trimmed.startsWith("###")) {
+                const subHeader = trimmed.replace("###", "").trim();
+                const cleanKey = subHeader.toLowerCase().replace(/\s+/g, "_");
+                templateSchema.description[cleanKey] = { label: subHeader, instruction: "", value: "" };
+                jsonObject._last_key = cleanKey;
+              } else if (currentSection === "description" && trimmed.startsWith(">") && jsonObject._last_key) {
+                templateSchema.description[jsonObject._last_key].instruction = trimmed.replace(">", "").trim();
               }
-            } else {
-              if (!trimmed.startsWith("[") && !trimmed.startsWith("]")) {
-                structuredData.unmapped_lines.push(trimmed);
-              }
-            }
-          });
-          
-          fs.writeFileSync("workspace/readme.json", JSON.stringify(structuredData, null, 2));
-          console.log("Structured metadata schema created successfully.");
+            });
+            
+            delete jsonObject._last_key;
+            jsonObject.template = templateSchema;
+            
+            fs.writeFileSync("README-JSON.json", JSON.stringify(jsonObject, null, 2));
+            console.log("Structured JSON generated successfully.");
+          } catch (err) {
+            console.error("Failed to compile structured JSON:", err.message);
+            process.exit(1);
+          }
           '
 
-      - name: Zip and Prepare Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: readme-bundle-issue-${{ github.event.issue.number }}
-          path: workspace/
-          retention-days: 5
-
-      - name: Respond with Download Link
-        uses: peter-evans/create-or-update-comment@v4
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          body: |
-            ### 🎉 Your Dataset Metadata Files are Ready!
-            
-            The system has successfully processed your text entry. You can download the formatted bundle containing your markdown text and JSON structural file asset.
-            
-            👉 **[Download Bundle Assets](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})** *(Navigate to the **Artifacts** panel at the bottom of the page link above to grab your zip).*
-            
-            *This tracking ticket will now close.*
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Clean up and Close Issue
-        run: gh issue close ${{ github.event.issue.number }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit and push generated files
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add README-MD.md README-TXT.txt README-JSON.json
+          git diff-index --quiet HEAD || git commit -m "Automated build: Structured Actionable JSON conversion"
+          git push
