@@ -37,17 +37,28 @@ jobs:
           const txtStart = fs.readFileSync("guide-text.txt", "utf8");
           fs.writeFileSync("README-TXT.txt", txtStart + coreMd);
           
-          // 3. Create the final JSON file safely escaping markdown quirks
-          const jsonStartRaw = fs.readFileSync("guide-json.json", "utf8");
+          // 3. Create the final JSON file safely using built-in object structures
+          const jsonStartRaw = fs.readFileSync("guide-json.json", "utf8").trim();
           
-          // Use JSON.stringify to turn the raw markdown into valid JSON escaped characters (\n, \", etc.)
-          const escapedCore = JSON.stringify(coreMd);
-          // Strip the extra outer quotes automatically added by stringify
-          const coreJsonString = escapedCore.substring(1, escapedCore.length - 1);
+          // Strip the incomplete trailing key to turn guide-json.json into a perfectly valid object
+          // This safely handles whether it ends with a quote or a comma.
+          const validBaseJsonString = jsonStartRaw.replace(/,\s*"template"\s*:\s*\{\s*"license_and_content"\s*:\s*"$/, "") + "\n}";
           
-          // Seamlessly stitch the start, the escaped content, add the missing closing quote, and close the JSON object
-          const jsonFooter = "\"\n  }\n}";
-          fs.writeFileSync("README-JSON.json", jsonStartRaw + coreJsonString + jsonFooter);
+          try {
+            const jsonObject = JSON.parse(validBaseJsonString);
+            
+            // Re-inject the template configuration cleanly through standard object notation
+            jsonObject.template = {
+              license_and_content: coreMd
+            };
+            
+            // This outputs a perfectly indented, 100% syntactically valid JSON file automatically
+            fs.writeFileSync("README-JSON.json", JSON.stringify(jsonObject, null, 2));
+            console.log("JSON generated successfully.");
+          } catch (err) {
+            console.error("Failed to parse the base JSON template:", err.message);
+            process.exit(1);
+          }
           '
 
       - name: Commit and push generated files
@@ -55,5 +66,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add README-MD.md README-TXT.txt README-JSON.json
-          git diff-index --quiet HEAD || git commit -m "Automated build: Fixed missing quote in JSON template file"
+          git diff-index --quiet HEAD || git commit -m "Automated build: Native JSON engine serialization patch"
           git push
