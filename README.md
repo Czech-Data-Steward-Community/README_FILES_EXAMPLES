@@ -13,7 +13,7 @@ To view a copy of this license, visit: https://creativecommons.org/licenses/by/4
 
 ## Software & Structure License (JSON & Workflows)
 All machine-readable data structures, configuration files (including `.json` templates), and GitHub Actions automation workflows are licensed under the **Apache License 2.0**.
-This template was based on the README Template Suite for Archaeology created by Tobiáš Kolmačka (ORCID: 0009-0006-7760-7320) and developed to support researchers at the Institute of Archaeology of the Czech Academy of Sciences (IAP = ARÚ).
+This template was based on the [README Template Suite](https://doi.org/10.5281/zenodo.20624364) for Archaeology created by Tobiáš Kolmačka (ORCID: [0009-0006-7760-7320](https://orcid.org/0009-0006-7760-7320)) and developed to support researchers at the Institute of Archaeology of the Czech Academy of Sciences, Prague (IAP-CAS = ARÚ).
 
 In the acknowledgement section you will find the attribution of the authors of this template already implemented. Feel free to change it accordingly, and do not forget to mention changes you did.
 
