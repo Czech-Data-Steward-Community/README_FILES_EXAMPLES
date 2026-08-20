@@ -3,22 +3,22 @@ This README template containing examples is authored by the **Collective of Data
 
 The readme files here are meant to be used for data documentation, not software. Software has other needs to be documented that might be missing from these readme templates.
 
-# LICENSE:
+## LICENSE:
 
 This project is dual-licensed to accommodate both documentation text and structural data/code files.
 
-## Documentation License (Markdown & Text)
+### Documentation License (Markdown & Text)
 All human-readable narrative text, template prose, and examples contained within `.md` and `.txt` files are licensed under the **Creative Commons Attribution 4.0 International License (CC BY 4.0)**. 
 To view a copy of this license, visit: https://creativecommons.org/licenses/by/4.0/
 
-## Software & Structure License (JSON & Workflows)
+### Software & Structure License (JSON & Workflows)
 All machine-readable data structures, configuration files (including `.json` templates), and GitHub Actions automation workflows are licensed under the **Apache License 2.0**.
 This template was based on the [README Template Suite](https://doi.org/10.5281/zenodo.20624364) for Archaeology created by Tobiáš Kolmačka (ORCID: [0009-0006-7760-7320](https://orcid.org/0009-0006-7760-7320)) and developed to support researchers at the Institute of Archaeology of the Czech Academy of Sciences, Prague (IAP-CAS = ARÚ).
 
 In the acknowledgement section you will find the attribution of the authors of this template already implemented. Feel free to change it accordingly, and do not forget to mention changes you did.
 
 ---
-# How does it work?
+## How does it work?
 
 The files for the end users are named based on their format: [README-TXT](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/README-TXT.txt), [README-MD](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/README-MD.md) and [README-JSON](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/README-JSON.json). You can copy/download and use the format that suits you the most.
 
