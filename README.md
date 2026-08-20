@@ -1,4 +1,4 @@
-**# README_FILES_EXAMPLES
+# README_FILES_EXAMPLES
 This README template containing examples is authored by the **Collective of Data Stewards of the Czech Data Stewards Community** and is licensed under a [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). The full list of authors can be found [here](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/Collective_datastewards.md).  
 
 The readme files here are meant to be used for data documentation, not software. Software has other needs to be documented that might be missing from these readme templates.
