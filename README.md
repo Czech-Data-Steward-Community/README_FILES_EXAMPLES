@@ -20,7 +20,7 @@ In the acknowledgement section you will find the attribution of the authors of t
 ---
 ## How does it work?
 
-The files for the end users are named based on their format: [README-TXT](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/README-TXT.txt), [README-MD](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/README-MD.md) and [README-JSON](https://github.com/Czech-Data-Steward-Community/README_FILES/blob/main/README-JSON.json). You can copy/download and use the format that suits you the most.
+The files for the end users are located in the `templates/` folder and named based on their format: [README-TXT](./templates/README-TXT.txt), [README-MD](./templates/README-MD.md) and [README-JSON](./templates/README-JSON.json). You can copy/download and use the format that suits you the most.
 
 The core-file.md is the file where all changes are made when an update is needed. The files named "guide-format" are used in combination with the core file to automatically do the updates on the separate readme files for the end users, without the need to manually change all three files. In workflows you can see the files generated with AI (Gemini), which are used for this combination of the files. All templates have the same content, so you only need to choose the format you prefer. 
 
