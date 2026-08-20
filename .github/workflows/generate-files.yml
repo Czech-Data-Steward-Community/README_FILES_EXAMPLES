@@ -5,10 +5,10 @@ on:
     branches:
       - main
     paths:
-      - 'core-file.md'
-      - 'guide-md.md'
-      - 'guide-text.txt'
-      - 'guide-json.json'
+      - 'structure-files/core-file.md'
+      - 'structure-files/guide-md.md'
+      - 'structure-files/guide-text.txt'
+      - 'structure-files/guide-json.json'
   workflow_dispatch:
 
 permissions:
@@ -25,19 +25,19 @@ jobs:
         run: |
           node -e '
           const fs = require("fs");
-          const coreMd = fs.readFileSync("core-file.md", "utf8");
+          const coreMd = fs.readFileSync("structure-files/core-file.md", "utf8");
           
           // 1. Create the final Markdown file
-          const mdStart = fs.readFileSync("guide-md.md", "utf8");
-          fs.writeFileSync("README-MD.md", mdStart + coreMd);
+          const mdStart = fs.readFileSync("structure-files/guide-md.md", "utf8");
+          fs.writeFileSync("templates/README-MD.md", mdStart + coreMd);
           
           // 2. Create the final Text file
-          const txtStart = fs.readFileSync("guide-text.txt", "utf8");
-          fs.writeFileSync("README-TXT.txt", txtStart + coreMd);
+          const txtStart = fs.readFileSync("structure-files/guide-text.txt", "utf8");
+          fs.writeFileSync("templates/README-TXT.txt", txtStart + coreMd);
           
           // 3. Read valid JSON file directly and parse structurally
           try {
-            const jsonObject = JSON.parse(fs.readFileSync("guide-json.json", "utf8"));
+            const jsonObject = JSON.parse(fs.readFileSync("structure-files/guide-json.json", "utf8"));
             const lines = coreMd.split(/\r?\n/);
             const templateSchema = { basic_information: {}, description: {}, metadata: {} };
             let currentSection = "metadata";
@@ -75,7 +75,7 @@ jobs:
             delete jsonObject._last_key;
             jsonObject.template = templateSchema;
             
-            fs.writeFileSync("README-JSON.json", JSON.stringify(jsonObject, null, 2));
+            fs.writeFileSync("templates/README-JSON.json", JSON.stringify(jsonObject, null, 2));
             console.log("Structured JSON generated successfully.");
           } catch (err) {
             console.error("Failed to compile structured JSON:", err.message);
@@ -87,6 +87,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add README-MD.md README-TXT.txt README-JSON.json
+          git add templates/README-MD.md templates/README-TXT.txt templates/README-JSON.json
           git diff-index --quiet HEAD || git commit -m "Automated build: Structured Actionable JSON conversion"
           git push
