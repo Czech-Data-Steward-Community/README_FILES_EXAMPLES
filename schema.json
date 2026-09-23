@@ -1,0 +1,182 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://github.com/Czech-Data-Steward-Community/README_FILES_EXAMPLES/schema.json",
+	"title": "README JSON format",
+	"description": "Validation schema for README-JSON files and the README JSON template.",
+	"type": "object",
+	"required": [
+		"license",
+		"template"
+	],
+	"properties": {
+		"license": {
+			"type": "string",
+			"minLength": 1
+		},
+		"guidelines": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"template": {
+			"$ref": "#/$defs/template"
+		}
+	},
+	"additionalProperties": true,
+	"allOf": [
+		{
+			"if": {
+				"required": [
+					"guidelines"
+				]
+			},
+			"then": {
+				"properties": {
+					"guidelines": {
+						"minItems": 1
+					}
+				}
+			},
+			"else": {
+				"$ref": "#/$defs/completedReadme"
+			}
+		}
+	],
+	"$defs": {
+		"field": {
+			"type": "object",
+			"required": [
+				"label",
+				"value"
+			],
+			"properties": {
+				"label": {
+					"type": "string",
+					"minLength": 1
+				},
+				"placeholder": {
+					"type": "string"
+				},
+				"instruction": {
+					"type": "string"
+				},
+				"value": {
+					"type": "string"
+				}
+			},
+			"additionalProperties": true
+		},
+		"fieldCollection": {
+			"type": "object",
+			"additionalProperties": {
+				"$ref": "#/$defs/field"
+			}
+		},
+		"template": {
+			"type": "object",
+			"required": [
+				"basic_information",
+				"description",
+				"metadata"
+			],
+			"properties": {
+				"basic_information": {
+					"$ref": "#/$defs/fieldCollection"
+				},
+				"description": {
+					"$ref": "#/$defs/fieldCollection"
+				},
+				"metadata": {
+					"type": "object",
+					"additionalProperties": true
+				}
+			},
+			"additionalProperties": true
+		},
+		"completedReadme": {
+			"properties": {
+				"template": {
+					"required": [
+						"basic_information",
+						"description"
+					],
+					"properties": {
+						"basic_information": {
+							"required": [
+								"authors",
+								"main_contact",
+								"dataset_license",
+								"readme_version",
+								"pid"
+							],
+							"properties": {
+								"authors": {
+									"$ref": "#/$defs/nonEmptyField"
+								},
+								"main_contact": {
+									"allOf": [
+										{
+											"$ref": "#/$defs/nonEmptyField"
+										},
+										{
+											"properties": {
+												"value": {
+													"format": "email"
+												}
+											}
+										}
+									]
+								},
+								"dataset_license": {
+									"$ref": "#/$defs/nonEmptyField"
+								},
+								"readme_version": {
+									"$ref": "#/$defs/nonEmptyField"
+								},
+								"pid": {
+									"allOf": [
+										{
+											"$ref": "#/$defs/nonEmptyField"
+										},
+										{
+											"properties": {
+												"value": {
+													"format": "uri"
+												}
+											}
+										}
+									]
+								}
+							}
+						},
+						"description": {
+							"required": [
+								"brief_description"
+							],
+							"properties": {
+								"brief_description": {
+									"$ref": "#/$defs/nonEmptyField"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"nonEmptyField": {
+			"allOf": [
+				{
+					"$ref": "#/$defs/field"
+				},
+				{
+					"properties": {
+						"value": {
+							"minLength": 1
+						}
+					}
+				}
+			]
+		}
+	}
+}

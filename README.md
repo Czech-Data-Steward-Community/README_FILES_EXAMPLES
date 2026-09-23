@@ -30,6 +30,27 @@ The files "guide-format.format" contain instructions on how to fill in the READM
 
 ---
 
+## JSON validation and Zenodo metadata
+
+The JSON template is validated by [schema.json](./schema.json), which uses JSON Schema Draft 2020-12. It supports both the reusable template and completed README-JSON files:
+
+- Template mode keeps the instructional `guidelines` array and permits empty values.
+- Completed mode removes `guidelines` and requires authors, contact, dataset license, README version, PID, and brief description.
+- Optional sections may be removed, and custom metadata properties are allowed.
+
+See the [README-JSON validation guide](./use-examples/README-JSON%20validation.md) for required and optional fields, minimal valid files, layered validation, and Docker commands for Windows, Linux, macOS, and WSL.
+
+The [README-JSON to Zenodo conversion guide](./use-examples/README-JSON%20to%20Zenodo%20json%20conversion.md) explains how to map README content to Zenodo metadata, create `.zenodo.json` or an API request body, validate the result locally, and test it safely in the Zenodo sandbox before publication.
+
+Recommended workflow:
+
+1. Complete and validate the README-JSON file.
+2. Convert the relevant fields to Zenodo metadata and manually add title, upload type, publication date, and access rights.
+3. Validate the Zenodo JSON with the published Zenodo schema.
+4. Create an unpublished sandbox draft and review the server response before publishing.
+
+---
+
 <img width="3052" height="648" alt="nrp" src="https://github.com/user-attachments/assets/dee4d9d3-97fe-44a7-aa63-07db31611e2e" />
 
 **This project output was developed with financial contributions from the EOSC CZ initiative throught the project National Repository Platform for Research Data (CZ.02.01.01/00/23_014/0008787) funded by Programme Johannes Amos Comenius (P JAC) of the Ministry of Education, Youth and Sports of the Czech Republic (MEYS).** 
