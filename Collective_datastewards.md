@@ -11,6 +11,8 @@ Authors:
 **Template Architecture & Design:** 
 Koutentaki G., Kolmačka T., Martinková P., Soldánová A.
 
+**JSON schema for Zenodo 
+* Schätz Martin https://orcid.org/0000-0003-0931-4017
 ---
 
 Other contributors:
