@@ -13,6 +13,7 @@ Koutentaki G., Kolmačka T., Martinková P., Soldánová A.
 
 **JSON schema for Zenodo** (conversion & validation):**
 Schätz M.
+
 ---
 
 Other contributors:
