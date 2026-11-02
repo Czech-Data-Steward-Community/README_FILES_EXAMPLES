@@ -38,7 +38,7 @@ The JSON template is validated by [schema.json](./schema.json), which uses JSON 
 - Completed mode removes `guidelines` and requires authors, contact, dataset license, README version, PID, and brief description.
 - Optional sections may be removed, and custom metadata properties are allowed.
 
-See the [README-JSON validation guide](./use-examples/README-JSON%20validation.md) for required and optional fields, minimal valid files, layered validation, and Docker commands for Windows, Linux, macOS, and WSL.
+See the [README-JSON validation guide](https://github.com/Czech-Data-Steward-Community/README_FILES_EXAMPLES/blob/main/JSON-Zenodo-example/README-JSON%20validation.md) for required and optional fields, minimal valid files, layered validation, and Docker commands for Windows, Linux, macOS, and WSL.
 
 The [README-JSON to Zenodo conversion guide](./use-examples/README-JSON%20to%20Zenodo%20json%20conversion.md) explains how to map README content to Zenodo metadata, create `.zenodo.json` or an API request body, validate the result locally, and test it safely in the Zenodo sandbox before publication.
 
